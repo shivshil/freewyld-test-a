@@ -36,7 +36,8 @@ def load_listings():
         """
         SELECT l.id, l.market, l.bookable_nights, l.booked_nights, l.adr, m.region
         FROM listings l
-        JOIN market_meta m ON l.market = m.market
+        JOIN (SELECT market, region FROM market_meta GROUP BY market) m
+          ON l.market = m.market
         """
     )
     rows = [dict(r) for r in cur.fetchall()]
